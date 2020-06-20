@@ -29,7 +29,7 @@ stack_start:
 .section .text
 .global _start
 .type _start, @function
-_start:
+_begin:
     /* Bootloader loads in 32-bit protected mode on x86 machine
      * Interrupts, paging, and other background processes are disabled
      * DO NOT infer implicit implementation of modules, the only
@@ -57,5 +57,5 @@ _start:
 1:   hlt
      jmp 1b
 
-// Set size of _start symbol to current location '.' minus start
-.size _start, . - _start
+// Set size of _begin symbol to current location '.' minus start
+.size _begin, . - _begin
