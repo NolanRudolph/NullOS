@@ -9,6 +9,13 @@ export PREFIX=$PWD/opt/cross
 
 BUILD=0
 
+function help
+{
+  printf "Usage: ./$0 [-b | --build]\n"
+  printf "\t-b | --build : Build the source files required for cross-compiler\n"
+  exit 1
+}
+
 while [[ $# -gt 0 ]]; do
   key="$1"
   
@@ -18,11 +25,17 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
+    -h|--help)
+      help
+      ;;
+    *)
+    shift  
+    ;;
   esac
 done
 set -- "${POSITIONAL[@]}"
 
-if [ $BUILD ]; then
+if [ $BUILD == 1 ]; then
   # File structure setup
   mkdir src src/build-binutils src/build-gcc opt opt/cross
   cd src
