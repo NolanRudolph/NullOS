@@ -2,3 +2,4 @@ opt
 src
 *.o
 *.bin
+*.iso
