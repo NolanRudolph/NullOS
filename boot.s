@@ -1,11 +1,11 @@
 /* BASIC GNU ASSEMBLER */
 
 # Declare constants for the multiboot header.
-.set ALIGN,    1<<0             /* align loaded modules on page boundaries */
-.set MEMINFO,  1<<1             /* provide memory map */
-.set FLAGS,    ALIGN | MEMINFO  /* this is the Multiboot 'flag' field */
-.set MAGIC,    0x1BADB002       /* 'magic number' lets bootloader find the header */
-.set CHECKSUM, -(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
+.set ALIGN,    1<<0             // Alignment for loaded modules on paged boundaries
+.set MEMINFO,  1<<1             // Memory map
+.set FLAGS,    ALIGN | MEMINFO  // Multiboot flag field
+.set MAGIC,    0x1BADB002       // "Magic number" for bootloader recognition
+.set CHECKSUM, -(MAGIC + FLAGS) // Checksum confirms we're multiboot
  
 # Declare multiboot header marking this program (multiboot) as a kernel
 # Magic values apart of the multiboot standard, bootloader searches for this signature
