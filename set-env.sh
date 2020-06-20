@@ -43,7 +43,7 @@ set -- "${POSITIONAL[@]}"
 
 if [ $BUILD == 1 ]; then
   # File structure setup
-  mkdir src src/build-binutils src/build-gcc opt opt/cross
+  mkdir -p src/build-binutils src/build-gcc opt/cross iso/boot/grub
   cd src
 
   # Obtaining cross-compiler sources
