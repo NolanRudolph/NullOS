@@ -77,3 +77,8 @@ if [ $? == 1 ]; then
   echo "Error compiling - nullKernel.bin has an invalid multiboot header; Exiting..."
   exit 1
 fi
+
+# Create the ISO
+grub-mkrescue -o nullOS.iso iso
+
+echo "Complete! Now run \`qemu-system-i386 -cdrom nullOS.iso\` (after installing proper dependencies, i.e. qemu-system-x86) to run nullOS!"
