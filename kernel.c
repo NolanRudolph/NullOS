@@ -100,7 +100,7 @@ void term_put_entry_at(char c, uint8_t color, size_t x, size_t y)
 	term_buffer[index] = vga_entry(c, color);
 }
  
-// Text-based portion of our term
+// Text-based portion of our terminal
 void term_write(const char* data, size_t size) 
 {
 	for (size_t i = 0; i < size; i++)
