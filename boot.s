@@ -30,32 +30,32 @@ stack_top:
 .global _start
 .type _start, @function
 _start:
-  /* Bootloader loads in 32-bit protected mode on x86 machine
-   * Interrupts, paging, and other background processes are disabled
-   * DO NOT infer implicit implementation of modules, the only
-   * features provided to the bootloader is encased by the kernel */
- 
-  // Set esp (stack pointer) register to top of the stack 
-	mov $stack_top, %esp
- 
-  /* TODO: 
-   *  1. Initialize Global Descriptor Table (GDT)
-   *  2. Initialize Crucial Processor State
-   *  3. Enable Interrupts
-   *  4. Enable Paging (optional)
-   *  5. Create C++ features (e.g. global constructors, exceptions) for runtime support */
- 
-  // Enter high-level kernel
-  // NOTE: 16B alignment is preserved due to zero pushes
-	call kernel_main
- 
-  /* Infinite Loop
-   *  1. cli flushes interrupt enable in eflags, disabling interrupts
-   *  2. hlt waits for next interrupt to arrive
-   *  3. jmp jumps to the hlt instruction if woken */
-	cli
-1:hlt
-	jmp 1b
- 
+    /* Bootloader loads in 32-bit protected mode on x86 machine
+     * Interrupts, paging, and other background processes are disabled
+     * DO NOT infer implicit implementation of modules, the only
+     * features provided to the bootloader is encased by the kernel */
+
+    // Set esp (stack pointer) register to top of the stack 
+    mov $stack_top, %esp
+
+    /* TODO: 
+     *  1. Initialize Global Descriptor Table (GDT)
+     *  2. Initialize Crucial Processor State
+     *  3. Enable Interrupts
+     *  4. Enable Paging (optional)
+     *  5. Create C++ features (e.g. global constructors, exceptions) for runtime support */
+
+    // Enter high-level kernel
+    // NOTE: 16B alignment is preserved due to zero pushes
+    call kernel_main
+
+    /* Infinite Loop
+     *  1. cli flushes interrupt enable in eflags, disabling interrupts
+     *  2. hlt waits for next interrupt to arrive
+     *  3. jmp jumps to the hlt instruction if woken */
+     cli
+1:   hlt
+     jmp 1b
+
 // Set size of _start symbol to current location '.' minus start
 .size _start, . - _start
