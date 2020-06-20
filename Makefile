@@ -1,14 +1,15 @@
 GCCPARAMS = -ffreestanding -O2 -nostdlib -lgcc
 LDPARAMS = -ffreestanding -O2 -nostdlib -lgcc
+SRCPREFIX = boot/
 # ASPARAMS = 
 
-objects = boot.o kernel.o
+objects = obj/boot.o obj/kernel.o
 
-%.o: %.c
-	gcc $(GCCPARAMS) -o $@ -c $<
+obj/%.o: $(SRCPREFIX)%.c
+	i686-elf-gcc $(GCCPARAMS) -o $@ -c $<
 
-%.o: %.s
+obj/%.o: $(SRCPREFIX)%.s
 	i686-elf-as -o $@ $<
 
-nullKernel.bin: linker.ld $(objects)
+iso/boot/nullOS.bin: linker.ld $(objects)
 	i686-elf-gcc $(LDPARAMS) -T $< -o $@ $(objects)

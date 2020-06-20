@@ -68,10 +68,11 @@ if [ $BUILD == 1 ]; then
 fi
 
 # Make the binary kernel
+mkdir -p obj
 make
 
 # Ensure valid Multiboot v1 header
-grub-file --is-x86-multiboot nullKernel.bin
+grub-file --is-x86-multiboot nullOS.bin
 if [ $? == 1 ]; then
   echo "Error compiling - nullKernel.bin has an invalid multiboot header; Exiting..."
   exit 1
