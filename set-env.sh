@@ -69,3 +69,10 @@ fi
 
 # Make the binary kernel
 make
+
+# Ensure valid Multiboot v1 header
+grub-file --is-x86-multiboot nullKernel.bin
+if [ $? == 1 ]; then
+  echo "Error compiling - nullKernel.bin has an invalid multiboot header; Exiting..."
+  exit 1
+fi
