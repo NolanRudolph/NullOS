@@ -20,23 +20,23 @@
 # Application Binary Interface (ABI) requires 16B alignment
 .section .bss
 .align 16
-stack_end:
+stack_bot:
 .skip 16384
-stack_start:
+stack_top:
  
 # Used by linker, specifies _start as the kernel entry point
 # Bootloader jumps to this position once kernel is loaded
 .section .text
 .global _start
 .type _start, @function
-_begin:
+_start:
     /* Bootloader loads in 32-bit protected mode on x86 machine
      * Interrupts, paging, and other background processes are disabled
      * DO NOT infer implicit implementation of modules, the only
      * features provided to the bootloader is encased by the kernel */
 
     # Set esp (stack pointer) register to top of the stack 
-    mov $stack_start, %esp
+    mov $stack_top, %esp
 
     /* TODO: 
      *  1. Initialize Global Descriptor Table (GDT)
@@ -57,5 +57,5 @@ _begin:
 1:   hlt
      jmp 1b
 
-# Set size of _begin symbol to current location '.' minus start
-.size _begin, . - _begin
+# Set size of _start symbol to current location '.' minus start
+.size _start, . - _start
