@@ -3,11 +3,17 @@
 # MAKE SURE THE SCRIPT IS RUN FROM /path/to/NullOS
 
 # Sets up the Linux environment to use the GCC-based cross-compiler
+<<FIXME
+if ! [[ -f placeholder.txt ]]; then
+  echo "Please run script from /path/to/NullOS"
+  exit 1
+fi
+FIXME
+
+# Export required variables in user's current environment
 export PATH=$PATH:$PWD/opt/cross/bin
 export TARGET=i1686-elf
 export PREFIX=$PWD/opt/cross
-
-BUILD=0
 
 function help
 {
@@ -15,6 +21,8 @@ function help
   printf "\t-b | --build : Build the source files required for cross-compiler\n"
   exit 1
 }
+
+BUILD=0
 
 while [[ $# -gt 0 ]]; do
   key="$1"
