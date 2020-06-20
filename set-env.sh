@@ -3,12 +3,10 @@
 # MAKE SURE THE SCRIPT IS RUN FROM /path/to/NullOS
 
 # Sets up the Linux environment to use the GCC-based cross-compiler
-<<FIXME
-if ! [[ -f placeholder.txt ]]; then
+if ! [[ -f boot.s ]]; then
   echo "Please run script from /path/to/NullOS"
   exit 1
 fi
-FIXME
 
 # Export required variables in user's current environment
 export PATH=$PATH:$PWD/opt/cross/bin
@@ -68,3 +66,6 @@ if [ $BUILD == 1 ]; then
   make install-gcc
   make install-target-libgcc
 fi
+
+# Make the binary kernel
+make
