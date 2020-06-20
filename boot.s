@@ -15,7 +15,7 @@
 .long FLAGS
 .long CHECKSUM
  
-// Multiboot standard lacks stack pointer register on startup
+// Multiboot standard lacks stack pointer on startup
 // Here we allocate 16 KB to the stack using two variables 
 // Application Binary Interface (ABI) requires 16B alignment
 .section .bss
