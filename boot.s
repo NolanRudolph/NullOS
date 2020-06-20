@@ -1,5 +1,4 @@
 /* BASIC GNU ASSEMBLER */
-# This coordinates well with the cross-compiler toolchain
 
 # Declare constants for the multiboot header.
 .set ALIGN,    1<<0             /* align loaded modules on page boundaries */
