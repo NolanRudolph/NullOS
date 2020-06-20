@@ -43,7 +43,7 @@ _begin:
      *  2. Initialize Crucial Processor State
      *  3. Enable Interrupts
      *  4. Enable Paging (optional)
-     *  5. Create C++ features (e.g. global constructors, exceptions) for runtime support */
+     *  5. Create C/C++ features (e.g. global constructors, exceptions) for runtime support */
 
     // Enter high-level kernel
     // NOTE: 16B alignment is preserved due to zero pushes
