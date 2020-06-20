@@ -43,6 +43,7 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
  
+// Some artistic algebra for entry color
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
 {
 	return fg | bg << 4;
@@ -53,6 +54,7 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
  
+// Calculates string length (recall string.h is not a freestanding header)
 size_t strlen(const char* str) 
 {
 	size_t len = 0;
@@ -61,65 +63,75 @@ size_t strlen(const char* str)
 	return len;
 }
  
+// Width and Height of our terminal
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
  
-size_t terminal_row;
-size_t terminal_column;
-uint8_t terminal_color;
-uint16_t *terminal_buffer;
+// term variables (namely for coloring)
+size_t term_row;
+size_t term_column;
+uint8_t term_color;
+uint16_t *term_buffer;
  
-void terminal_initialize(void) 
+// This fills out the terminal PIXEL BY PIXEL!
+void term_initialize(void) 
 {
-	terminal_row = 0;
-	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-	terminal_buffer = (uint16_t *) 0xB8000;
+	term_row = 0;
+	term_column = 0;
+	term_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	term_buffer = (uint16_t *) 0xB8000;
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', terminal_color);
+			term_buffer[index] = vga_entry(' ', term_color);
 		}
 	}
 }
 
-void terminal_setcolor(uint8_t color) 
+void term_setcolor(uint8_t color) 
 {
-	terminal_color = color;
+	term_color = color;
 }
  
-void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) 
+// Replacing pixel (x, y) with different color
+void term_put_entry_at(char c, uint8_t color, size_t x, size_t y) 
 {
 	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color);
+	term_buffer[index] = vga_entry(c, color);
 }
  
-void terminal_putchar(char c) 
-{
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
-	}
-}
- 
-void terminal_write(const char* data, size_t size) 
+// Text-based portion of our term
+void term_write(const char* data, size_t size) 
 {
 	for (size_t i = 0; i < size; i++)
-		terminal_putchar(data[i]);
+  {
+    term_put_entry_at(data[i], term_color, term_column, term_row);
+
+    // Reset terminal accumulator variables if exceeding max
+    if (++term_column == VGA_WIDTH)
+    {
+      term_column = 0;
+      if (++term_row == VGA_HEIGHT)
+      {
+        term_row = 0;
+      }
+    }
+  }
 }
  
-void terminal_writestring(const char* data) 
+// Write a string, whether user or system informational
+void term_writestring(const char* data) 
 {
-	terminal_write(data, strlen(data));
+	term_write(data, strlen(data));
 }
  
+// Main function called by linker
 void kernel_main(void) 
 {
-  // Initialize terminal interface
-	terminal_initialize();
+  // Initialize term interface
+	term_initialize();
  
-  // TODO: Implement new-line support
-	terminal_writestring("Hello World!\n");
+  // TODO: Implement new-line character support
+	// term_writestring("Hello World!\n");
+	term_writestring("Hello World!");
 }
