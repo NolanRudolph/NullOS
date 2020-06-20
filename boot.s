@@ -1,11 +1,11 @@
 /* BASIC GNU ASSEMBLER */
 
 # Declare constants for the multiboot header.
-.set ALIGN,    1<<0             // Alignment for loaded modules on paged boundaries
-.set MEMINFO,  1<<1             // Memory map
-.set FLAGS,    ALIGN | MEMINFO  // Multiboot flag field
-.set MAGIC,    0x1BADB002       // "Magic number" for bootloader recognition
-.set CHECKSUM, -(MAGIC + FLAGS) // Checksum confirms we're multiboot
+.set ALIGN,    1<<0             # Alignment for loaded modules on paged boundaries
+.set MEMINFO,  1<<1             # Memory map
+.set FLAGS,    ALIGN | MEMINFO  # Multiboot flag field
+.set MAGIC,    0x1BADB002       # "Magic number" for bootloader recognition
+.set CHECKSUM, -(MAGIC + FLAGS) # Checksum confirms we're multiboot
  
 # Declare multiboot header marking this program (multiboot) as a kernel
 # Magic values apart of the multiboot standard, bootloader searches for this signature
@@ -15,17 +15,17 @@
 .long FLAGS
 .long CHECKSUM
  
-// Multiboot standard lacks stack pointer on startup
-// Here we allocate 16 KB to the stack using two variables 
-// Application Binary Interface (ABI) requires 16B alignment
+# Multiboot standard lacks stack pointer on startup
+# Here we allocate 16 KB to the stack using two variables 
+# Application Binary Interface (ABI) requires 16B alignment
 .section .bss
 .align 16
 stack_end:
 .skip 16384
 stack_start:
  
-// Used by linker, specifies _start as the kernel entry point
-// Bootloader jumps to this position once kernel is loaded
+# Used by linker, specifies _start as the kernel entry point
+# Bootloader jumps to this position once kernel is loaded
 .section .text
 .global _start
 .type _start, @function
@@ -35,7 +35,7 @@ _begin:
      * DO NOT infer implicit implementation of modules, the only
      * features provided to the bootloader is encased by the kernel */
 
-    // Set esp (stack pointer) register to top of the stack 
+    # Set esp (stack pointer) register to top of the stack 
     mov $stack_start, %esp
 
     /* TODO: 
@@ -45,8 +45,8 @@ _begin:
      *  4. Enable Paging (optional)
      *  5. Create C/C++ features (e.g. global constructors, exceptions) for runtime support */
 
-    // Enter high-level kernel
-    // NOTE: 16B alignment is preserved due to zero pushes
+    # Enter high-level kernel
+    # NOTE: 16B alignment is preserved due to zero pushes
     call kernel_main
 
     /* Infinite Loop
@@ -57,5 +57,5 @@ _begin:
 1:   hlt
      jmp 1b
 
-// Set size of _begin symbol to current location '.' minus start
+# Set size of _begin symbol to current location '.' minus start
 .size _begin, . - _begin
